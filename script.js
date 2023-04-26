@@ -1,12 +1,9 @@
-const PLAYER_X_CLASS = 'x'
-const PLAYER_O_CLASS = 'circle'
-const WINNING_COMBINATIONS = [
-	[0, 1, 2],
-	[3, 4, 5],
-	[6, 7, 8],
-	[0, 3, 6],
-	[1, 4, 7],
-	[2, 5, 8],
-	[0, 4, 8],
-	[2, 4, 6]
-]
+
+const menu = document.querySelector('.menu')
+const menuItems = menu.querySelector('.items')
+
+//this will add and remove my 'hidden' class for my items element
+menu.addEventListener('click', (event) => {
+menuItems.classList.toggle('hidden')
+});
+
