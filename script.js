@@ -1,6 +1,10 @@
+let numberOfP1Wins = 0;
+let numberOfP2Wins = 0;
+let numberOfTies = 0;
+
 const App = {
   // all our selected html elements
-  $: {
+  elements: {
     menu: document.querySelector("[data-id='menu']"),
     menuItems: document.querySelector("[data-id='menu-items']"),
     resetBtn: document.querySelector("[data-id='reset-btn']"),
@@ -12,6 +16,7 @@ const App = {
     turn: document.querySelector("[data-id='turn']"),
     p1Wins: document.querySelector("[data-id='p1-wins']"),
     p2Wins: document.querySelector("[data-id='p2-wins']"),
+    ties: document.querySelector("[data-id='ties']"),
   },
 
   state: {
@@ -20,7 +25,7 @@ const App = {
     p2Wins: 0,
     ties: 0,
   },
-  
+
   getGameStatus(moves) {
     const p1Moves = moves
       .filter((move) => move.playerId === 1)
@@ -47,8 +52,17 @@ const App = {
       const p1Wins = pattern.every((v) => p1Moves.includes(v));
       const p2Wins = pattern.every((v) => p2Moves.includes(v));
 
-      if (p1Wins) winner = 1;
-      if (p2Wins) winner = 2;
+      if (p1Wins) {
+        winner = 1;
+        numberOfP1Wins++;
+        App.elements.p1Wins.textContent = `${numberOfP1Wins} Wins`;
+      }
+
+      if (p2Wins) {
+        winner = 2;
+        numberOfP2Wins++;
+        App.elements.p2Wins.textContent = `${numberOfP2Wins} Wins`;
+      }
     });
 
     return {
@@ -63,38 +77,39 @@ const App = {
 
   registerEvents() {
     //this will add and remove my 'hidden' class for my items element
-    App.$.menu.addEventListener("click", (event) => {
-      App.$.menuItems.classList.toggle("hidden");
+    App.elements.menu.addEventListener("click", (event) => {
+      App.elements.menuItems.classList.toggle("hidden");
     });
-// reset button if you get stuck or run into bug, or you're about to lose and want to reset
-    App.$.resetBtn.addEventListener("click", (event) => {
+
+    // reset button if you get stuck or run into bug, or you're about to lose and want to reset
+    App.elements.resetBtn.addEventListener("click", (event) => {
       App.state.moves = [];
-      App.$.squares.forEach((square) => square.replaceChildren());
-      App.$.modal.classList.add("hidden");
+      App.elements.squares.forEach((square) => square.replaceChildren());
+      App.elements.modal.classList.add("hidden");
 
       const turnIcon = document.createElement("i");
       turnIcon.classList.add("fa", "fa-solid", "fa-x", "turquoise");
       const turnLabel = document.createElement("p");
       turnLabel.innerText = "Player 1, you are up!";
       turnLabel.classList = "turquoise";
-      App.$.turn.replaceChildren(turnIcon, turnLabel);
+      App.elements.turn.replaceChildren(turnIcon, turnLabel);
     });
 
-//used same code for modal button to reset game board and whose turn it is
-    App.$.modalBtn.addEventListener("click", (event) => {
+    //used same code for modal button to reset game board and whose turn it is
+    App.elements.modalBtn.addEventListener("click", (event) => {
       App.state.moves = [];
-      App.$.squares.forEach((square) => square.replaceChildren());
-      App.$.modal.classList.add("hidden");
+      App.elements.squares.forEach((square) => square.replaceChildren());
+      App.elements.modal.classList.add("hidden");
 
       const turnIcon = document.createElement("i");
       turnIcon.classList.add("fa", "fa-solid", "fa-x", "turquoise");
       const turnLabel = document.createElement("p");
       turnLabel.innerText = "Player 1, you are up!";
       turnLabel.classList = "turquoise";
-      App.$.turn.replaceChildren(turnIcon, turnLabel);
+      App.elements.turn.replaceChildren(turnIcon, turnLabel);
     });
 
-    App.$.squares.forEach((square) => {
+    App.elements.squares.forEach((square) => {
       square.addEventListener("click", (event) => {
         //check if there's already a play, if so, return early
         const hasMove = (squareId) => {
@@ -132,7 +147,7 @@ const App = {
           turnLabel.classList = "turquoise";
         }
 
-        App.$.turn.replaceChildren(turnIcon, turnLabel);
+        App.elements.turn.replaceChildren(turnIcon, turnLabel);
 
         App.state.moves.push({
           squareId: +square.id,
@@ -145,7 +160,7 @@ const App = {
         const game = App.getGameStatus(App.state.moves);
 
         if (game.status === "complete") {
-          App.$.modal.classList.remove("hidden");
+          App.elements.modal.classList.remove("hidden");
 
           let message = "";
           if (game.winner) {
@@ -153,7 +168,7 @@ const App = {
           } else {
             message = `Tie game!`;
           }
-          App.$.modalText.textContent = message;
+          App.elements.modalText.textContent = message;
         }
       });
     });
