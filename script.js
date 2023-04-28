@@ -20,7 +20,7 @@ const App = {
     p2Wins: 0,
     ties: 0,
   },
-
+  
   getGameStatus(moves) {
     const p1Moves = moves
       .filter((move) => move.playerId === 1)
@@ -66,7 +66,7 @@ const App = {
     App.$.menu.addEventListener("click", (event) => {
       App.$.menuItems.classList.toggle("hidden");
     });
-
+// reset button if you get stuck or run into bug, or you're about to lose and want to reset
     App.$.resetBtn.addEventListener("click", (event) => {
       App.state.moves = [];
       App.$.squares.forEach((square) => square.replaceChildren());
@@ -80,14 +80,18 @@ const App = {
       App.$.turn.replaceChildren(turnIcon, turnLabel);
     });
 
+//used same code for modal button to reset game board and whose turn it is
     App.$.modalBtn.addEventListener("click", (event) => {
       App.state.moves = [];
       App.$.squares.forEach((square) => square.replaceChildren());
       App.$.modal.classList.add("hidden");
-    });
 
-    App.$.newRoundBtn.addEventListener("click", (event) => {
-      console.log("add new round");
+      const turnIcon = document.createElement("i");
+      turnIcon.classList.add("fa", "fa-solid", "fa-x", "turquoise");
+      const turnLabel = document.createElement("p");
+      turnLabel.innerText = "Player 1, you are up!";
+      turnLabel.classList = "turquoise";
+      App.$.turn.replaceChildren(turnIcon, turnLabel);
     });
 
     App.$.squares.forEach((square) => {
