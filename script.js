@@ -93,6 +93,13 @@ const App = {
       turnLabel.innerText = "Player 1, you are up!";
       turnLabel.classList = "turquoise";
       App.elements.turn.replaceChildren(turnIcon, turnLabel);
+
+	  numberOfP1Wins = 0;
+	  numberOfP2Wins = 0;
+	  numberOfTies = 0;
+	  App.elements.p1Wins.textContent = `${numberOfP1Wins} Wins`;
+	  App.elements.p2Wins.textContent = `${numberOfP2Wins} Wins`;
+	  App.elements.ties.textContent = `${numberOfTies}`;
     });
 
     //used same code for modal button to reset game board and whose turn it is
@@ -167,6 +174,8 @@ const App = {
             message = `Player ${game.winner} wins!`;
           } else {
             message = `Tie game!`;
+			numberOfTies++;
+			App.elements.ties.textContent = `${numberOfTies}`;
           }
           App.elements.modalText.textContent = message;
         }
