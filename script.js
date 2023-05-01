@@ -3,7 +3,7 @@ let numberOfP2Wins = 0;
 let numberOfTies = 0;
 
 const App = {
-  // all our selected html elements
+  // object for all of our selected html elements
   elements: {
     menu: document.querySelector("[data-id='menu']"),
     menuItems: document.querySelector("[data-id='menu-items']"),
@@ -18,23 +18,23 @@ const App = {
     p2Wins: document.querySelector("[data-id='p2-wins']"),
     ties: document.querySelector("[data-id='ties']"),
   },
-
+// base empty state of the game
   state: {
     moves: [],
     p1Wins: 0,
     p2Wins: 0,
     ties: 0,
   },
-
+//method that takes an array of moves for p1
   getGameStatus(moves) {
     const p1Moves = moves
       .filter((move) => move.playerId === 1)
       .map((move) => +move.squareId);
-
+//takes array of moves for p2
     const p2Moves = moves
       .filter((move) => move.playerId === 2)
       .map((move) => +move.squareId);
-
+//stores winning patterns for moves
     const winningPatterns = [
       [1, 2, 3],
       [4, 5, 6],
@@ -47,11 +47,11 @@ const App = {
     ];
 
     let winner = null;
-
+//this code checks the moves with the winning patterns array above
     winningPatterns.forEach((pattern) => {
       const p1Wins = pattern.every((v) => p1Moves.includes(v));
       const p2Wins = pattern.every((v) => p2Moves.includes(v));
-
+//if p1 or p2 wins, adds +1 to the player's wins on our webpage
       if (p1Wins) {
         winner = 1;
         numberOfP1Wins++;
@@ -70,7 +70,7 @@ const App = {
       winner, // 1 || 2 || null
     };
   },
-
+//game is being initialized by init() method, calling registerEvents()
   init() {
     App.registerEvents();
   },
@@ -163,7 +163,7 @@ const App = {
 
         square.replaceChildren(squareIcon);
 
-        //check if there is a winner or tie game
+        //check if there is a winner or tie game amd displays pop up message when game is complete
         const game = App.getGameStatus(App.state.moves);
 
         if (game.status === "complete") {
